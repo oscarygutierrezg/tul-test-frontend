@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <clipPath id="clip-background1">
+      <rect width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  <g id="background1" clip-path="url(#clip-background1)">
+    <rect width="1920" height="1080" fill="#fff"/>
+    <g id="background">
+      <rect id="Rectangle" width="1925" height="1080" transform="translate(-2)" fill="none"/>
+      <path id="background-2" data-name="background" d="M1061-373.325c120.89,109.038,286.79,185.54,480,215.384,162.47,25.1,321.07,16.9,480-32.081s289.07-138.53,480-172.205,308.27-22.2,480-11.1v524.72H1061Z" transform="translate(-1061 924.567)" fill="#368f41"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,62 @@
+<div class="mat-elevation-z8">
+  <div class="flex-div col-xs-12 col-md-12">
+    <h1 style="    color: white;
+    font-weight: 600;margin-top: 20px">Productos</h1>
+  </div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sku">
+      <th mat-header-cell *matHeaderCellDef> SKU </th>
+      <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipoProducto">
+      <th mat-header-cell *matHeaderCellDef>Tipo Producto </th>
+      <td mat-cell *matCellDef="let element"> {{element.tipoProducto | productTypeFromString | productTypeDesc}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="precio">
+      <th mat-header-cell *matHeaderCellDef>Precio </th>
+      <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+    </ng-container>
+  <ng-container matColumnDef="descuento">
+      <th mat-header-cell *matHeaderCellDef>Descuento </th>
+      <td mat-cell *matCellDef="let element"> {{element.porcentajeDescuento}} </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="btn-toolbar" role="toolbar">
+          <div class="btn-group" role="group">
+            <span matTooltip="Aumentar Inventario" class="input-group-text   span-icon " (click)="aumentar(element.id)">
+              <img src="assets/images/icons/plus-flat.png" class="center custom-img-width">
+            </span>
+          </div>
+          <div class="btn-group" role="group">
+            <span
+            [ngClass]="{'span-icon': element.quantity>0,'span-icon-disabled': element.quantity<=0}"
+            matTooltip='Disminuir Inventario' class="input-group-text    " (click)="disminuir(element.id,element.quantity)">
+              <img src='assets/images/icons/minus-flat.png' class="center custom-img-width">
+            </span>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[ 10, 20,30, 40, 50]" showFirstLastButtons></mat-paginator>
+</div>

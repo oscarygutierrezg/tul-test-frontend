@@ -1,0 +1,4 @@
+export enum ProductType {
+  WITH_DISCOUNT = 'WITH_DISCOUNT',
+	WITHOUT_DISCOUNT ='WITHOUT_DISCOUNT'
+}

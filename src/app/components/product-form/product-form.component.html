@@ -1,0 +1,150 @@
+<div class="container-fluid " style="align-items: center;display: flex;flex-direction: column; padding: 15px;">
+  <h1 style="margin-bottom: 20px;">Datos Producto</h1>
+
+  <form *ngIf="productForm" [formGroup]="productForm" #formDir="ngForm">
+
+    <div [hidden]="formDir.submitted">
+
+      <div class="form-group ">
+        <div class="form-group-flex ">
+          <label for="name">Nombre</label>
+          <input [(ngModel)]="product.nombre" id="name" class="form-control" formControlName="productName" required
+            placeholder="Nombre...">
+        </div>
+        <div *ngIf="productName?.invalid && (productName?.dirty || productName?.touched)" class="alert alert-danger">
+          <div *ngIf="productName?.errors?.required">
+            Nombre es requerido.
+          </div>
+          <div *ngIf="productName?.errors?.minlength">
+            Nombre debe tener al menos 3 caracteres de largo.
+          </div>
+          <div *ngIf="productName?.errors?.maxlength">
+            Nombre no puede tener más de 20 caracteres de largo.
+          </div>
+        </div>
+      </div>
+
+        <div class="form-group ">
+        <div class="form-group-flex ">
+          <label for="name">SKU</label>
+          <input [(ngModel)]="product.sku" id="name" class="form-control" formControlName="productSku" required
+            placeholder="SKU...">
+        </div>
+        <div *ngIf="productSku?.invalid && (productSku?.dirty || productSku?.touched)" class="alert alert-danger">
+          <div *ngIf="productSku?.errors?.required">
+            SKU es requerido.
+          </div>
+          <div *ngIf="productSku?.errors?.minlength">
+            SKU debe tener al menos 3 caracteres de largo.
+          </div>
+          <div *ngIf="productSku?.errors?.maxlength">
+            SKU no puede tener más de 20 caracteres de largo.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+
+        <div class="form-group-flex ">
+          <label for="lastName">Descripción</label>
+          <input [(ngModel)]="product.descripcion" id="lastName" class="form-control"
+            formControlName="productDescription" required placeholder="Descripción...">
+
+        </div>
+
+        <div *ngIf="productDescription?.invalid && (productDescription?.dirty || productDescription?.touched)"
+          class="alert alert-danger">
+          <div *ngIf="productDescription?.errors?.required">
+            Descripción es requerido.
+          </div>
+          <div *ngIf="productDescription?.errors?.minlength">
+            Descripción debe tener al menos 3 caracteres de largo.
+          </div>
+          <div *ngIf="productDescription?.errors?.maxlength">
+            Descripción no puede tener más de 2000 caracteres de largo.
+          </div>
+        </div>
+      </div>
+
+    <div class="form-group ">
+
+
+        <div class="form-group-flex ">
+          <label for="documentType">Tipo Producto</label>
+
+          <select [(ngModel)]="product.tipoProducto" class="form-control" formControlName="productType" required>
+            <option disabled selected value="">
+              Seleccione...</option>
+
+            <option *ngFor="let tipo of productTypes" [value]="tipo">
+              {{tipo  | productTypeDesc}}</option>
+          </select>
+        </div>
+
+        <div *ngIf="productType?.invalid && productType?.touched" class="alert alert-danger">
+          <div *ngIf="productType?.errors?.required">Tipo Producto es requerido.</div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+
+
+        <div class="form-group-flex ">
+          <label for="birthDate">Precio</label>
+          <input appNumberOnly [(ngModel)]="quantity" type="number" name="quantity" min="1" max="999999999"
+            class="form-control" formControlName="productQuantity" required>
+        </div>
+        <div *ngIf="productQuantity?.invalid && productQuantity?.touched" class="alert alert-danger">
+          <div *ngIf="productQuantity?.errors?.required">Precio es requerida.</div>
+
+          <div *ngIf="productQuantity?.errors?.min">
+            Precio mayor o igual que 1.
+          </div>
+          <div *ngIf="productQuantity?.errors?.max">
+            Precio menor o igual que 9999999.
+          </div>
+        </div>
+      </div>
+
+  <div class="form-group ">
+
+
+        <div class="form-group-flex ">
+          <label for="birthDate">Porcentaje Descuento</label>
+          <input appNumberOnly [(ngModel)]="discount" type="number" name="discount" min="0" max="100"
+            class="form-control" formControlName="productDiscount" required>
+        </div>
+        <div *ngIf="productDiscount?.invalid && productDiscount?.touched" class="alert alert-danger">
+          <div *ngIf="productDiscount?.errors?.required">Porcentaje Descuento es requerido.</div>
+
+          <div *ngIf="productDiscount?.errors?.min">
+            Porcentaje Descuento mayor o igual que 0.
+          </div>
+          <div *ngIf="productDiscount?.errors?.max">
+            Porcentaje Descuento menor o igual que 100.
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="flex-div">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn  btn-primary" (click)="goHome()">
+          Volver
+        </button>
+      </div>
+
+      <div class="btn-group" role="group">
+        <button *ngIf='!idProduct' (click)="guardar()" type="button" class="btn btn-success "
+          [disabled]="productForm.invalid">
+          Guardar
+        </button>
+        <button *ngIf='idProduct' (click)="guardar()" type="button" class="btn btn-success "
+          [disabled]="productForm.invalid">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
