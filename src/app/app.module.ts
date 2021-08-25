@@ -15,6 +15,8 @@ import { NumberOnlyDirective } from './directives/number-only.directive';
 import { InfoDialogComponent } from './angular-material/components/info-dialog/info-dialog.component';
 import { ProductTypeDescPipe } from './pipes/product-type-desc.pipe';
 import { ProductTypeFromStringPipe } from './pipes/product-type-from-string.pipe';
+import { TablePaginationCartComponent } from './angular-material/components/table-pagination-cart/table-pagination-cart';
+import { ProductCartComponent } from './components/product-cart/product-cart.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { ProductTypeFromStringPipe } from './pipes/product-type-from-string.pipe
     ProductFormComponent,
     ProductListComponent,
     TablePaginationComponent,
+    TablePaginationCartComponent,
     ConfirmDialogComponent,
+    ProductCartComponent,
     InfoDialogComponent,
     NumberOnlyDirective,
     ProductTypeDescPipe,

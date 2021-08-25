@@ -1,4 +1,14 @@
 <div class="mat-app-background basic-container">
+<div class="shopping-area">
+    <button (click)="goCart()" mat-fab color="primary" matTooltip="Ver carrito de compras" >
+        <mat-icon>shopping_cart</mat-icon>
+    </button>
+    <span style="z-index: 1000;
+    position: relative;
+    top: 16px;
+    right: 17px;
+    font-weight: bold;">{{productsQty}}</span>
+ </div>
  <app-table-pagination>loading</app-table-pagination>
  <div class="flex-div" style="    justify-content: flex-start;
  margin-top: 10px; margin-left: 10px;">

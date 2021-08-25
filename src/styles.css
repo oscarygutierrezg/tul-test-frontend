@@ -10,3 +10,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   justify-content: space-evenly;
   margin-bottom: 5px
 }
+
+
+
+.label-principal{
+  color: #005B56;
+    font-weight: bold;
+}
+
+
+.color-principal{
+  color: #005B56;
+}
+

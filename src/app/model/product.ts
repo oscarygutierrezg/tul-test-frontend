@@ -16,7 +16,7 @@ export class Product {
     this.descripcion = '';
     this.porcentajeDescuento = 0;   
      this.precio = 0;
-     this.tipoProducto=ProductType.WITHOUT_DISCOUNT
+     this.tipoProducto=ProductType.NODE
  }
 
 }

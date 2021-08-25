@@ -5,6 +5,11 @@ import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CartService } from 'src/app/services/car.service';
+import { Cart } from 'src/app/model/cart';
+import { ProductCartReq, ProductCartRes } from 'src/app/model/product-cart';
 
 @Component({
   selector: 'app-table-pagination',
@@ -18,35 +23,54 @@ export class TablePaginationComponent implements OnInit, OnDestroy  {
 
 
   dataSource: any;
-  private products: Product[] | undefined;
-  private ids: string[] = [];
+  private products: Product[] = [];
   private productsChangeObs: Subscription | undefined;
 
   @ViewChild(MatPaginator, {static: false})
   paginator: MatPaginator | undefined;
+  private cartChangeObs: Subscription | undefined;
+  private productsCartChangeObs: Subscription | undefined;
+  cart: Cart | undefined;
+  productsCart: ProductCartRes[] = [];
+  newCart: Cart | undefined;
+  productCartReq: ProductCartReq | undefined;
 
   constructor(
     private router: Router,
     private productService: ProductService,
+    private cartService: CartService,
+    private dialog: MatDialog
     ) {
     }
-
+  
   ngOnInit() {
     this.productsChangeObs = this.productService.productsChangeObs.subscribe( (products: Product[]) => {
-        if ( this.ids.length === 0 ) {
-          products.forEach( t => {
-            this.ids.push(t.id);
-          });
-        }
         this.products = products;
         this.dataSource = new MatTableDataSource<Product>(this.products);
         this.dataSource.paginator = this.paginator;
     });
+    this.cartChangeObs = this.cartService.cartChangeObs.subscribe( (cart: Cart) => {
+      this.cart =cart;
+      this.cartService.getProductsByCart(cart.id).subscribe(p => {
+        console.log(JSON.stringify(p));
+        });
+     });
+     this.productsCartChangeObs = this.cartService.productsCartChangeObs.subscribe( (pc: ProductCartRes[]) => {
+      this.productsCart =pc;
+     });
   }
 
 
   ngOnDestroy() {
-    this.productsChangeObs?.unsubscribe();
+    if(this.cartChangeObs){
+      this.cartChangeObs.unsubscribe();
+    }
+    if(this.productsChangeObs){
+      this.productsChangeObs.unsubscribe();
+    }
+    if(this.productsCartChangeObs){
+      this.productsCartChangeObs.unsubscribe();
+    }
   }
 
   buscar() {
@@ -55,19 +79,70 @@ export class TablePaginationComponent implements OnInit, OnDestroy  {
     });
   }
 
-  aumentar(id: number) {
-    this.router.navigateByUrl(`/edit/${id}/aumentar`);
-  }
+  add(id: string) {
+    const rq = new ProductCartReq();
+    if(!this.cart){
+      this.newCart = new Cart();
+      this.cartService.createCart(new Cart()).subscribe(p => {
+        console.log(JSON.stringify(p));
+        
+        rq.cantidad =1; 
+        rq.cartId = p.href.split("/")[5]; 
+        rq.productId = id; 
+        this.cartService.addProductCart(rq).subscribe(product => {
+          console.log(JSON.stringify(product));
 
-  disminuir(id: number, quantity: number) {
-    if (quantity > 0){
-      this.router.navigateByUrl(`/edit/${id}/disminuir`);
+          this.cartService.getProductsByCart(rq.cartId ).subscribe(p => {
+            console.log(JSON.stringify(p));
+          });
+          
+        });
+      });
+    } else {
+      rq.cantidad =1; 
+      const p = this.productsCart.find(p => p.product.id === id) 
+      if(p){
+        rq.cantidad =p.cantidad + 1;
+      }
+     
+        
+        rq.cartId = this.cart.id; 
+        rq.productId = id; 
+        this.cartService.addProductCart(rq).subscribe(product => {
+          console.log(JSON.stringify(product));
+          this.cartService.getProductsByCart(rq.cartId ).subscribe(p => {
+            console.log(JSON.stringify(p));
+          });
+        });
     }
   }
 
+  edit(id: string) {
+    this.router.navigateByUrl(`/edit/${id}`);
+  }
+
+  delete(id: string, nombre : string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Atención',
+        body: `¿Está seguro de eliminar el producto  ${nombre}?`,
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productService.deleteProduct(id)
+          .subscribe(p => {
+            console.log(JSON.stringify(p));
+            this.productService.getProducts();
+          });
+      }
+    });
+  }
 
 
 
+  
 }
 
 

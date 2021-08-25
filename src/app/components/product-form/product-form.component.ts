@@ -24,12 +24,10 @@ export class ProductFormComponent implements OnInit {
   precioCtrl: FormControl = new FormControl;
   descuentoCtrl: FormControl = new FormControl;
   skuCtrl: FormControl = new FormControl;
-  quantity: number =0;
-  discount: number =1;
   typeCtrl: FormControl = new FormControl;
   idProduct: string =  "";
-  action: string =  "";
-  productTypes = [ProductType.WITHOUT_DISCOUNT,ProductType.WITH_DISCOUNT]
+  productTypes = [ProductType.WITHOUT_DISCOUNT,ProductType.WITH_DISCOUNT];
+  productTypesDiscount = ProductType.WITH_DISCOUNT;
 
   constructor(
     private router: Router,
@@ -42,14 +40,8 @@ export class ProductFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.idProduct = this.route.snapshot.params['id'];
-    this.action = this.route.snapshot.params['accion'];
-    this.quantity = 0;
     if (this.idProduct) {
       this.productService.getProduct(this.idProduct).subscribe(product => {
-        if (product.precio <= 0 && this.action === 'disminuir') {
-          this.showModal('ERROR', 'El stock actual no permite disminuir el inventario');
-          this.router.navigateByUrl('/');
-        }
         this.product = product;
         this.setFormControl();
       });
@@ -57,7 +49,26 @@ export class ProductFormComponent implements OnInit {
       this.product = new Product();
       this.setFormControl();
     }
+
+    this.productForm.get('productType')?.valueChanges
+    .subscribe(f=> {
+      this.onCountryChanged(f);
+  })
+
   }
+
+  onCountryChanged(value: any) {
+    console.log('onCountryChanged ',this.product.tipoProducto )
+    console.log(value)
+    if(value == ProductType.WITH_DISCOUNT){
+      this.typeCtrl.addValidators(Validators.required);
+    }else{
+      this.typeCtrl.clearValidators();
+      this.product.porcentajeDescuento = 0;
+      this.descuentoCtrl.setValue(0);
+    }
+  }
+
 
   setFormControl() {
     this.nameCtrl = new FormControl(this.product.nombre, [
@@ -81,8 +92,8 @@ export class ProductFormComponent implements OnInit {
       this.typeCtrl = new FormControl(this.product.tipoProducto, [
         Validators.required
       ]);
-      this.precioCtrl = new FormControl(this.quantity, [Validators.required, Validators.min(1), Validators.max(9999999)]);
-      this.descuentoCtrl = new FormControl(this.quantity, [Validators.required, Validators.min(0), Validators.max(100)]);
+      this.precioCtrl = new FormControl(this.product.precio, [Validators.required, Validators.min(1), Validators.max(9999999)]);
+      this.descuentoCtrl = new FormControl(this.product.porcentajeDescuento, [Validators.required, Validators.min(0), Validators.max(100)]);
       
     return new  FormGroup({
       productName: this.nameCtrl,
@@ -120,15 +131,11 @@ export class ProductFormComponent implements OnInit {
 
 
   guardar() {
+    console.log('product',JSON.stringify(this.product));
     if (this.idProduct) {
-      if (this.action === 'disminuir' && ((this.product.precio - this.quantity) < 0 )) {
-      this.showModal('ERROR', `El stock actual ${this.product.precio} no permite disminuir el inventario en ${this.quantity}`);
-      return;
-    }
       this.onConfirmUpdate();
     } else {
       this.product.id = '';
-      this.product.precio = this.quantity;
       this.productService.addProduct(this.product)
         .subscribe(product => {
           console.log(JSON.stringify(product));
@@ -142,17 +149,12 @@ export class ProductFormComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Atención',
-        body: `¿Está seguro de  ${this.action} en  ${this.quantity} el producto  ${this.product.nombre}?`,
+        body: `¿Está seguro de actualizar el producto  ${this.product.nombre}?`,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (this.action === 'aumentar') {
-          this.product.precio += this.quantity;
-        } else if (this.action === 'disminuir') {
-          this.product.precio -= this.quantity;
-        }
         this.productService.updateProduct(this.product)
           .subscribe(product => {
             console.log(JSON.stringify(product));

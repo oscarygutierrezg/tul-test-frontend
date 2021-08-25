@@ -32,14 +32,14 @@ export class ProductService {
   }
 
   addProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(environment.api + this.productUrl, product, httpOptions).pipe(
-      tap((newTodo: Product) => this.log(`added Product w/ id=${newTodo.id}`)),
+    return this.http.post<any>(environment.api + this.productUrl, product, httpOptions).pipe(
+      tap((p: any) => this.log(`added Product w/ id=${p.href}`)),
       catchError(this.handleError<Product>('addProduct'))
     );
   }
 
   updateProduct(product: Product): Observable<any> {
-    return this.http.put(environment.api + this.productUrl , product , httpOptions).pipe(
+    return this.http.put(environment.api + this.productUrl+ '/' + product.id , product , httpOptions).pipe(
       tap(_ => this.log(`updated Product id=${JSON.stringify(Product)}`)),
       catchError(this.handleError<any>('updateProduct'))
     );
@@ -47,6 +47,17 @@ export class ProductService {
 
   getProduct(id: string): Observable<Product> {
     return this.http.get<Product>(environment.api + this.productUrl + '/' + id , httpOptions).pipe(
+      tap(_ => {
+        this.log(`get Product ${JSON.stringify(_)}`);
+        this.getProducts().subscribe(products => {
+        });
+      }),
+      catchError(this.handleError<any>('getProduct'))
+    );
+  }
+
+  deleteProduct(id: string): Observable<Product> {
+    return this.http.delete<Product>(environment.api + this.productUrl + '/' + id , httpOptions).pipe(
       tap(_ => {
         this.log(`get Product ${JSON.stringify(_)}`);
         this.getProducts().subscribe(products => {

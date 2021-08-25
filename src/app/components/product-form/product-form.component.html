@@ -7,7 +7,7 @@
 
       <div class="form-group ">
         <div class="form-group-flex ">
-          <label for="name">Nombre</label>
+          <label class="label-principal" for="name">Nombre</label>
           <input [(ngModel)]="product.nombre" id="name" class="form-control" formControlName="productName" required
             placeholder="Nombre...">
         </div>
@@ -26,7 +26,7 @@
 
         <div class="form-group ">
         <div class="form-group-flex ">
-          <label for="name">SKU</label>
+          <label class="label-principal" for="name">SKU</label>
           <input [(ngModel)]="product.sku" id="name" class="form-control" formControlName="productSku" required
             placeholder="SKU...">
         </div>
@@ -46,7 +46,7 @@
       <div class="form-group ">
 
         <div class="form-group-flex ">
-          <label for="lastName">Descripción</label>
+          <label class="label-principal" for="lastName">Descripción</label>
           <input [(ngModel)]="product.descripcion" id="lastName" class="form-control"
             formControlName="productDescription" required placeholder="Descripción...">
 
@@ -70,7 +70,7 @@
 
 
         <div class="form-group-flex ">
-          <label for="documentType">Tipo Producto</label>
+          <label class="label-principal" for="documentType">Tipo Producto</label>
 
           <select [(ngModel)]="product.tipoProducto" class="form-control" formControlName="productType" required>
             <option disabled selected value="">
@@ -90,8 +90,8 @@
 
 
         <div class="form-group-flex ">
-          <label for="birthDate">Precio</label>
-          <input appNumberOnly [(ngModel)]="quantity" type="number" name="quantity" min="1" max="999999999"
+          <label class="label-principal" for="birthDate">Precio</label>
+          <input appNumberOnly [(ngModel)]="product.precio" type="number" name="quantity" min="1" max="999999999"
             class="form-control" formControlName="productQuantity" required>
         </div>
         <div *ngIf="productQuantity?.invalid && productQuantity?.touched" class="alert alert-danger">
@@ -106,12 +106,12 @@
         </div>
       </div>
 
-  <div class="form-group ">
+  <div class="form-group " *ngIf="product.tipoProducto===productTypesDiscount">
 
 
         <div class="form-group-flex ">
-          <label for="birthDate">Porcentaje Descuento</label>
-          <input appNumberOnly [(ngModel)]="discount" type="number" name="discount" min="0" max="100"
+          <label class="label-principal" for="birthDate">Porcentaje Descuento</label>
+          <input appNumberOnly [(ngModel)]="product.porcentajeDescuento" type="number" name="discount" min="0" max="100"
             class="form-control" formControlName="productDiscount" required>
         </div>
         <div *ngIf="productDiscount?.invalid && productDiscount?.touched" class="alert alert-danger">

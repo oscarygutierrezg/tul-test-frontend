@@ -1,37 +1,43 @@
 <div class="mat-elevation-z8">
   <div class="flex-div col-xs-12 col-md-12">
     <h1 style="    color: #005B56;
-    font-weight: 600;margin-top: 20px">Productos</h1>
+    font-weight: 600;margin-top: 20px">Carrito de Compras</h1>
   </div>
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="nombre">
       <th class="label-principal" mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.nombre}} </td>
     </ng-container>
 
     <ng-container matColumnDef="sku">
       <th class="label-principal" mat-header-cell *matHeaderCellDef> SKU </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.sku}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.sku}} </td>
     </ng-container>
 
     <ng-container matColumnDef="descripcion">
       <th class="label-principal" mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.descripcion}} </td>
     </ng-container>
 
     <ng-container matColumnDef="tipoProducto">
       <th class="label-principal" mat-header-cell *matHeaderCellDef>Tipo Producto </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.tipoProducto | productTypeFromString | productTypeDesc}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.tipoProducto | productTypeFromString | productTypeDesc}} </td>
     </ng-container>
 
     <ng-container matColumnDef="precio">
       <th class="label-principal" mat-header-cell *matHeaderCellDef>Precio </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.precio}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.precio}} </td>
     </ng-container>
   <ng-container matColumnDef="descuento">
       <th class="label-principal" mat-header-cell *matHeaderCellDef>Descuento </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.porcentajeDescuento}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.porcentajeDescuento}} </td>
     </ng-container>
+
+     <ng-container matColumnDef="cantidad">
+      <th class="label-principal" mat-header-cell *matHeaderCellDef>Cantidad </th>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+    </ng-container>
+
 
 
 
@@ -40,17 +46,17 @@
       <td class = "color-principal" mat-cell *matCellDef="let element">
         <div class="btn-toolbar" role="toolbar" style="justify-content: space-evenly;">
           <div class="btn-group" role="group">
-            <button (click)="add(element.id)"  matTooltip="Agregar al Carrito" mat-mini-fab color="primary" >
-              <mat-icon>add_shopping_cart</mat-icon>
+            <button (click)="add(element.product.id)"  matTooltip="Agregar Uno" mat-mini-fab color="primary" >
+              <mat-icon>plus_one</mat-icon>
             </button>
           </div>
           <div class="btn-group" role="group">
-             <button (click)="edit(element.id)"  matTooltip="Editar Producto" mat-mini-fab color="accent" >
-              <mat-icon>edit</mat-icon>
+             <button (click)="minus(element.product.id)"  matTooltip="Eliminar Uno" mat-mini-fab color="accent" >
+              <mat-icon>remove</mat-icon>
             </button>
           </div>
           <div class="btn-group" role="group">
-          <button (click)="delete(element.id,element.nombre)"  matTooltip="Eliminar Producto" mat-mini-fab color="warn" >
+          <button (click)="delete(element)"  matTooltip="Eliminar Producto" mat-mini-fab color="warn" >
               <mat-icon>delete</mat-icon>
             </button>
           </div>

@@ -12,6 +12,8 @@ export class ProductTypeDescPipe implements PipeTransform {
         return 'Sin Descuento'
       case ProductType.WITH_DISCOUNT:
         return 'Con Descuento'
+      default:
+        return '';
     }
   }
 
