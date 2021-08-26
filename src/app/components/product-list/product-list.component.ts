@@ -13,9 +13,8 @@ import { ProductCartRes } from 'src/app/model/product-cart';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit,  OnDestroy{
-  private productsCart: ProductCartRes[]=[];
+  productsCart: ProductCartRes[]=[];
   private products: Product[]=[];
-  private qty: number = 0;
   
   
   private cartChangeObs: Subscription | undefined;
@@ -45,14 +44,9 @@ export class ProductListComponent implements OnInit,  OnDestroy{
     });
     this.productsCartChangeObs = this.cartService.productsCartChangeObs.subscribe( (p:  ProductCartRes[]) => {
       this.productsCart =  p;
-      this.qty = p.length;
     });
   }
   
-  get productsQty() {
-    return this.qty;
-  }
-
   getProducts(): void {
     this.personaService.getProducts()
     .subscribe(products => {

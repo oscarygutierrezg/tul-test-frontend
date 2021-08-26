@@ -1,0 +1,21 @@
+<div style="display: flex; justify-content: center; margin-top:20px">
+    <div>
+      <div>
+        <p class="label-principal">Resumen del Carrito</p>
+      </div>
+      <div class="line color-principal "></div>
+      <div class="shopping-detail">
+        <p class="label-principal">Productos ({{products | productsQty}})</p>
+        <p class="label-principal"> {{products | subTotal | currency}}</p>
+      </div>
+      <div class="shopping-detail">
+        <p class="label-principal">Descuentos</p>
+        <p class="label-principal"> {{products | totalDiscount | currency}}</p>
+      </div>
+      <div class="line color-principal"></div>
+      <div class="shopping-detail">
+        <p class="label-principal">Total del Carrito</p>
+        <p class="label-principal" style="margin-left: 10px;"> {{products | total | currency}}</p>
+      </div>
+    </div>
+</div>

@@ -26,11 +26,11 @@
 
     <ng-container matColumnDef="precio">
       <th class="label-principal" mat-header-cell *matHeaderCellDef>Precio </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.precio}} </td>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.precio | currency }} </td>
     </ng-container>
   <ng-container matColumnDef="descuento">
-      <th class="label-principal" mat-header-cell *matHeaderCellDef>Descuento </th>
-      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.porcentajeDescuento}} </td>
+      <th class="label-principal" mat-header-cell *matHeaderCellDef>Porcentaje de Descuento </th>
+      <td class = "color-principal" mat-cell *matCellDef="let element"> {{element.product.porcentajeDescuento}}% </td>
     </ng-container>
 
      <ng-container matColumnDef="cantidad">

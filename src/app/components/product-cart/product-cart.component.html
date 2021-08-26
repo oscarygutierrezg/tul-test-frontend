@@ -1,15 +1,13 @@
 <div class="mat-app-background basic-container">
-<div class="shopping-area" style="height:56px">
-    
- </div>
- <app-table-pagination-cart [products]="productsCart" >loading</app-table-pagination-cart>
- <div class="flex-div" style="    justify-content: flex-start;
- margin-top: 10px; margin-left: 10px;">
-    <button (click)="goNewProduct()" type="button" class="btn btn-success btn-margin-top-right" >
-        Nuevo
-    </button>
-     <button type="button" class="btn  btn-primary" (click)="goHome()">
-          Volver
-    </button>
-</div>
+  <div class="shopping-area" style="height:56px"></div>
+  <app-table-pagination-cart [products]="productsCart">loading</app-table-pagination-cart>
+  <app-product-cart-summary [products]="productsCart">loading</app-product-cart-summary>
+    <div class="flex-div" style="    justify-content: flex-start; margin-top: 10px; margin-left: 10px;">
+      <button (click)="goCheckout()" type="button" class="btn btn-success btn-margin-top-right" [disabled]="productsCart.length==0">
+        Procesar Carrito
+      </button>
+      <button style="margin-left:20px" type="button" class="btn  btn-primary" (click)="goHome()">
+        Volver
+      </button>
+    </div>
 </div>

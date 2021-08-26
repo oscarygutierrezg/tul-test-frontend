@@ -44,6 +44,17 @@ export class TablePaginationComponent implements OnInit, OnDestroy  {
     }
   
   ngOnInit() {
+    const cartId =  localStorage.getItem('cartId');
+    if(cartId){
+      this.cartService.getProductsByCart(cartId).subscribe(p => {
+        console.log(JSON.stringify(p));
+        });
+        this.cartService.getCart(cartId).subscribe(p => {
+          console.log(JSON.stringify(p));
+          });
+    }
+
+
     this.productsChangeObs = this.productService.productsChangeObs.subscribe( (products: Product[]) => {
         this.products = products;
         this.dataSource = new MatTableDataSource<Product>(this.products);
@@ -51,6 +62,7 @@ export class TablePaginationComponent implements OnInit, OnDestroy  {
     });
     this.cartChangeObs = this.cartService.cartChangeObs.subscribe( (cart: Cart) => {
       this.cart =cart;
+      localStorage.setItem('cartId', cart.id);
       this.cartService.getProductsByCart(cart.id).subscribe(p => {
         console.log(JSON.stringify(p));
         });

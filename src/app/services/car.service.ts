@@ -75,6 +75,8 @@ export class CartService {
     return this.http.get<Cart>(environment.api + this.cartUrl + '/' + id , httpOptions).pipe(
       tap(_ => {
         this.log(`get Cart ${JSON.stringify(_)}`);
+        this.cart = _;
+        this.cartChangeObs.next(this.cart);
       }),
       catchError(this.handleError<any>('getCart'))
     );

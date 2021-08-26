@@ -6,6 +6,11 @@ import { CartService } from 'src/app/services/car.service';
 import { Subscription } from 'rxjs';
 import { Cart } from 'src/app/model/cart';
 import { ProductCartRes } from 'src/app/model/product-cart';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/angular-material/components/confirm-dialog/confirm-dialog.component';
+import { CartStatusType } from 'src/app/model/cart-status-type';
+import { TotalPipe } from 'src/app/pipes/total.pipe';
+import { TotalDiscountPipe } from 'src/app/pipes/total-discount.pipe';
 
 @Component({
   selector: 'app-product-cart',
@@ -14,8 +19,7 @@ import { ProductCartRes } from 'src/app/model/product-cart';
 })
 export class ProductCartComponent implements OnInit,  OnDestroy{
   productsCart: ProductCartRes[]=[];
-  private products: Product[]=[];
-  private qty: number = 0;
+  private cart: Cart | undefined;
   
   
   private cartChangeObs: Subscription | undefined;
@@ -23,6 +27,8 @@ export class ProductCartComponent implements OnInit,  OnDestroy{
 
   constructor(
     private router: Router,
+    
+    private dialog: MatDialog,
       private cartService: CartService) {
     }
   ngOnDestroy(): void {
@@ -37,8 +43,10 @@ export class ProductCartComponent implements OnInit,  OnDestroy{
 
   ngOnInit() {
     this.productsCart =  this.cartService.productCartRes;
+    this.cart =  this.cartService.cart;
     console.log('this.productsCart', this.productsCart)
     this.cartChangeObs = this.cartService.cartChangeObs.subscribe( (cart: Cart) => {
+      this.cart= cart;
      this.cartService.getProductsByCart(cart.id).subscribe(p => {
       console.log(JSON.stringify(p));
     });
@@ -46,16 +54,34 @@ export class ProductCartComponent implements OnInit,  OnDestroy{
     this.productsCartChangeObs = this.cartService.productsCartChangeObs.subscribe( (p:  ProductCartRes[]) => {
       console.log(JSON.stringify(p));
       this.productsCart =  p;
-      this.qty = p.length;
     });
   }
-  
-  get productsQty() {
-    return this.qty;
-  }
+ 
 
-  goNewProduct() {
-    this.router.navigateByUrl('/new');
+  goCheckout() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Atención',
+        body: `¿Está seguro de finalizar con la compra?`,
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(this.cart);
+        if(this.cart){
+        this.cart.estado = CartStatusType.CHECKOUT;
+        this.cart.total =new TotalPipe().transform(this.productsCart);
+        this.cart.descuento =new TotalDiscountPipe().transform(this.productsCart);
+        this.cartService.updateCart(this.cart)
+          .subscribe(p => {
+            localStorage.removeItem('cartId');
+            console.log(JSON.stringify(p));
+            this.router.navigateByUrl('/end');
+          });
+        }
+      }
+    });
   }
 
   goHome() {

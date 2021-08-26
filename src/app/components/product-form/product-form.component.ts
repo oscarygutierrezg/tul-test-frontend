@@ -22,7 +22,6 @@ export class ProductFormComponent implements OnInit {
   nameCtrl: FormControl = new FormControl;
   descriptionCtrl: FormControl = new FormControl;
   precioCtrl: FormControl = new FormControl;
-  descuentoCtrl: FormControl = new FormControl;
   skuCtrl: FormControl = new FormControl;
   typeCtrl: FormControl = new FormControl;
   idProduct: string =  "";
@@ -61,11 +60,9 @@ export class ProductFormComponent implements OnInit {
     console.log('onCountryChanged ',this.product.tipoProducto )
     console.log(value)
     if(value == ProductType.WITH_DISCOUNT){
-      this.typeCtrl.addValidators(Validators.required);
-    }else{
-      this.typeCtrl.clearValidators();
-      this.product.porcentajeDescuento = 0;
-      this.descuentoCtrl.setValue(0);
+      this.product.porcentajeDescuento= 50;
+    } else {
+      this.product.porcentajeDescuento= 0;
     }
   }
 
@@ -93,15 +90,13 @@ export class ProductFormComponent implements OnInit {
         Validators.required
       ]);
       this.precioCtrl = new FormControl(this.product.precio, [Validators.required, Validators.min(1), Validators.max(9999999)]);
-      this.descuentoCtrl = new FormControl(this.product.porcentajeDescuento, [Validators.required, Validators.min(0), Validators.max(100)]);
-      
+    
     return new  FormGroup({
       productName: this.nameCtrl,
       productSku: this.skuCtrl,
       productType: this.typeCtrl,
       productDescription: this.descriptionCtrl,
       productQuantity: this.precioCtrl,
-      productDiscount: this.descuentoCtrl
     }, );
   }
 

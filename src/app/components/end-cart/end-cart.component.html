@@ -1,0 +1,13 @@
+<div class="mat-app-background basic-container">
+  <div class="shopping-area" style="height:56px"></div>
+    <div class="flex-div col-xs-12 col-md-12">
+    <h1 style="    color: #005B56;
+    font-weight: 600;margin-top: 20px">Compra Finalizada Satisfactoriamente</h1>
+  </div>
+  <app-product-cart-summary [products]="productsCart">loading</app-product-cart-summary>
+    <div class="flex-div" style="    justify-content: flex-start; margin-top: 10px; margin-left: 10px;">
+      <button (click)="goHome()" type="button" class="btn btn-success btn-margin-top-right">
+        OK
+      </button>
+    </div>
+</div>

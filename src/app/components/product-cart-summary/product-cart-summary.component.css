@@ -1,0 +1,14 @@
+
+.shopping-detail{
+    display: flex;
+justify-content: space-between;
+}
+
+.line{
+    background-color: transparent;
+    display: block;
+    height: 1px;
+    border-width: 0;
+    border-top: 2px solid #005B56;
+    margin-bottom: 10px;
+}

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,7 +17,12 @@ import { ProductTypeDescPipe } from './pipes/product-type-desc.pipe';
 import { ProductTypeFromStringPipe } from './pipes/product-type-from-string.pipe';
 import { TablePaginationCartComponent } from './angular-material/components/table-pagination-cart/table-pagination-cart';
 import { ProductCartComponent } from './components/product-cart/product-cart.component';
-
+import { TotalPipe } from './pipes/total.pipe';
+import { SubTotalPipe } from './pipes/sub-total.pipe';
+import { TotalDiscountPipe } from './pipes/total-discount.pipe';
+import { ProductsQtyPipe } from './pipes/products-qty.pipe';
+import { ProductCartSummaryComponent } from './components/product-cart-summary/product-cart-summary.component';
+import { EndCartComponent } from './components/end-cart/end-cart.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +36,13 @@ import { ProductCartComponent } from './components/product-cart/product-cart.com
     InfoDialogComponent,
     NumberOnlyDirective,
     ProductTypeDescPipe,
-    ProductTypeFromStringPipe
+    ProductTypeFromStringPipe,
+    TotalPipe,
+    SubTotalPipe,
+    TotalDiscountPipe,
+    ProductsQtyPipe,
+    ProductCartSummaryComponent,
+    EndCartComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -46,7 +57,9 @@ import { ProductCartComponent } from './components/product-cart/product-cart.com
     ConfirmDialogComponent,
     InfoDialogComponent
   ],
-  providers: [],
+  providers: [
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'COP'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
