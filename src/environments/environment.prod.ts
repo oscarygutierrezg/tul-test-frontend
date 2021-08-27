@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: 'http://localhost:8080/backendtest',
+  api: 'http://localhost:8081/ecommerce',
 };
