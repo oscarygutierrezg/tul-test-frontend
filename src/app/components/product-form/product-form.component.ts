@@ -52,7 +52,22 @@ export class ProductFormComponent implements OnInit {
     this.productForm.get('productType')?.valueChanges
     .subscribe(f=> {
       this.onCountryChanged(f);
-  })
+    });
+
+    this.productForm.get('productSku')?.valueChanges
+    .subscribe(f=> {
+      if(f.length >0){
+        this.productService.getProductBySku(f).subscribe(products=> {
+          if(products?.length>0){
+            this.productForm.get('productSku')?.setErrors({
+              exist: true
+            });
+            this.productForm.get('productSku')?.markAsDirty();
+          }
+        });
+      }
+      
+    });
 
   }
 

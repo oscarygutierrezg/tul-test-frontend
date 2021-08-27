@@ -23,6 +23,7 @@ import { TotalDiscountPipe } from './pipes/total-discount.pipe';
 import { ProductsQtyPipe } from './pipes/products-qty.pipe';
 import { ProductCartSummaryComponent } from './components/product-cart-summary/product-cart-summary.component';
 import { EndCartComponent } from './components/end-cart/end-cart.component';
+import { AuthGuard } from './guard/auth.guard';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { EndCartComponent } from './components/end-cart/end-cart.component';
     InfoDialogComponent
   ],
   providers: [
-    {provide: DEFAULT_CURRENCY_CODE, useValue: 'COP'}
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'COP'},
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

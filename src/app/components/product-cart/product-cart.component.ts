@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from 'src/app/angular-material/components/conf
 import { CartStatusType } from 'src/app/model/cart-status-type';
 import { TotalPipe } from 'src/app/pipes/total.pipe';
 import { TotalDiscountPipe } from 'src/app/pipes/total-discount.pipe';
+import { InfoDialogComponent } from 'src/app/angular-material/components/info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-product-cart',
@@ -44,7 +45,6 @@ export class ProductCartComponent implements OnInit,  OnDestroy{
   ngOnInit() {
     this.productsCart =  this.cartService.productCartRes;
     this.cart =  this.cartService.cart;
-    console.log('this.productsCart', this.productsCart)
     this.cartChangeObs = this.cartService.cartChangeObs.subscribe( (cart: Cart) => {
       this.cart= cart;
      this.cartService.getProductsByCart(cart.id).subscribe(p => {
@@ -84,9 +84,44 @@ export class ProductCartComponent implements OnInit,  OnDestroy{
     });
   }
 
+  goEmpty() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Atención',
+        body: `¿Está seguro de vaciar el carrito de compras?`,
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(this.cart);
+        if(this.cart){
+          this.cart.estado = CartStatusType.DESERTED;
+          this.cartService.updateCart(this.cart)
+          .subscribe(p => {
+            localStorage.removeItem('cartId');
+            console.log(JSON.stringify(p));
+            this.showModal('INFO', 'Carrito de compras vaciado satisfactoriamente');
+            this.router.navigateByUrl('/');
+          });
+        }
+      }
+    });
+  }
+
   goHome() {
     this.router.navigateByUrl('/');
   }
+
+  showModal(title: string, body: string) {
+    const dialogRef = this.dialog.open(InfoDialogComponent, {
+      data: {
+        title,
+        body,
+      }
+    });
+}
+
 
 }
 

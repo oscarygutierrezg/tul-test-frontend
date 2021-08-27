@@ -56,6 +56,15 @@ export class ProductService {
     );
   }
 
+  getProductBySku(sku: string): Observable<Product[]> {
+    return this.http.get<Product>(environment.api + this.productUrl + '/sku/' + sku, httpOptions).pipe(
+      tap(_ => {
+        this.log(`get Product ${JSON.stringify(_)}`);
+      }),
+      catchError(this.handleError<any>('getProduct'))
+    );
+  }
+
   deleteProduct(id: string): Observable<Product> {
     return this.http.delete<Product>(environment.api + this.productUrl + '/' + id , httpOptions).pipe(
       tap(_ => {

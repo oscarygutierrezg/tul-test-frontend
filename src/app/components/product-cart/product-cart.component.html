@@ -6,6 +6,9 @@
       <button (click)="goCheckout()" type="button" class="btn btn-success btn-margin-top-right" [disabled]="productsCart.length==0">
         Procesar Carrito
       </button>
+      <button style="margin-left:20px"  (click)="goEmpty()" type="button" class="btn btn-danger" [disabled]="productsCart.length==0">
+        Vaciar Carrito
+      </button>      
       <button style="margin-left:20px" type="button" class="btn  btn-primary" (click)="goHome()">
         Volver
       </button>

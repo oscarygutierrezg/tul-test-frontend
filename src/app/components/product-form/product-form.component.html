@@ -40,6 +40,9 @@
           <div *ngIf="productSku?.errors?.maxlength">
             SKU no puede tener más de 20 caracteres de largo.
           </div>
+          <div *ngIf="productSku?.errors?.exist">
+            SKU no puede estar registrado previamente.
+           </div>
         </div>
       </div>
 
